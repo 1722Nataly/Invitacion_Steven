@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -75,6 +74,18 @@
   @keyframes fall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1;} 100%{transform:translateY(100vh) rotate(720deg);opacity:0;} }
   .card-footer { text-align: center; padding: 10px 40px 30px; font-size: .65rem; color: rgba(212,175,55,.45); letter-spacing: .2em; }
   @media(max-width:500px){ .event-info,.parents-grid{grid-template-columns:1fr;} .family-section,.message-section,.card-header,.event-info,.countdown-section{padding-left:20px;padding-right:20px;} }
+
+  /* Indicador scroll */
+  .scroll-arrow {
+    font-size: 2rem; color: var(--dorado-brillante);
+    animation: arrowBounce 1.2s ease-in-out infinite;
+    display: block; line-height: 1;
+    text-shadow: 0 0 12px rgba(212,175,55,.7);
+  }
+  @keyframes arrowBounce {
+    0%,100% { transform: translateY(0); opacity:.5; }
+    50% { transform: translateY(8px); opacity:1; }
+  }
 
   /* ===================================================
      SOBRE ANIMADO - Solo esta parte fue agregada
@@ -216,6 +227,37 @@
     font-size: .95rem; color: rgba(245,226,122,.8);
     letter-spacing: .08em; text-align: center; padding: 0 24px;
   }
+
+  /* Indicador deslizar hacia abajo */
+  #scroll-hint {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 50; display: none;
+    flex-direction: column; align-items: center; gap: 6px;
+  }
+  #scroll-hint.visible { display: flex; animation: fadeInHint .8s ease forwards; }
+  @keyframes fadeInHint { from{opacity:0;transform:translateX(-50%) translateY(20px);} to{opacity:1;transform:translateX(-50%) translateY(0);} }
+  .scroll-hint-text {
+    font-size: .62rem; letter-spacing: .3em; color: rgba(245,226,122,.9);
+    text-transform: uppercase; font-weight: 600;
+    text-shadow: 0 0 10px rgba(212,175,55,.6);
+  }
+  .scroll-hint-arrows { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .scroll-hint-arrow {
+    width: 16px; height: 16px;
+    border-right: 2px solid var(--dorado);
+    border-bottom: 2px solid var(--dorado);
+    transform: rotate(45deg); opacity: 0;
+    animation: arrowDrop 1.2s ease-in-out infinite;
+  }
+  .scroll-hint-arrow:nth-child(1) { animation-delay: 0s; }
+  .scroll-hint-arrow:nth-child(2) { animation-delay: 0.2s; }
+  .scroll-hint-arrow:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes arrowDrop {
+    0%  { opacity:0; transform:rotate(45deg) translate(-4px,-4px); }
+    50% { opacity:1; }
+    100%{ opacity:0; transform:rotate(45deg) translate(4px,4px); }
+  }
   /* ===================================================
      FIN DEL SOBRE
      =================================================== */
@@ -264,11 +306,27 @@
 </div>
 <!-- ===== FIN SOBRE ===== -->
 
+<!-- Indicador deslizar -->
+<div id="scroll-hint">
+  <div class="scroll-hint-text">Desliza hacia abajo</div>
+  <div class="scroll-hint-arrows">
+    <div class="scroll-hint-arrow"></div>
+    <div class="scroll-hint-arrow"></div>
+    <div class="scroll-hint-arrow"></div>
+  </div>
+</div>
+
 <!-- ===== TU TARJETA ORIGINAL (oculta al inicio) ===== -->
 <div id="main-card" style="width:100%;display:flex;flex-direction:column;align-items:center;opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s ease;pointer-events:none;">
 
   <div class="card">
     <div class="card-top-border"></div>
+
+    <!-- Indicador deslizar -->
+    <div id="scrollHint" style="text-align:center;padding:12px 0 0;">
+      <div style="font-size:.58rem;letter-spacing:.3em;color:rgba(245,226,122,.75);text-transform:uppercase;margin-bottom:2px;font-family:'Montserrat',sans-serif;">Desliza para ver</div>
+      <span class="scroll-arrow">⌄</span>
+    </div>
 
     <div class="card-header">
       <span class="cap-icon">🎓</span>
@@ -288,7 +346,7 @@
     </div>
 
     <div class="event-info">
-      <div class="info-card"><span class="info-icon">📅</span><div class="info-label">Fecha</div><div class="info-value">Jueves 12 de Marzo, 2026<br>6 :00pm</div></div>
+      <div class="info-card"><span class="info-icon">📅</span><div class="info-label">Fecha</div><div class="info-value">Jueves 12 de Marzo, 2026</div></div>
       <div class="info-card"><span class="info-icon">📍</span><div class="info-label">Lugar</div><div class="info-value">Casa de mis Padres</div></div>
       <div class="info-card"><span class="info-icon">🎉</span><div class="info-label">Motivo</div><div class="info-value">Graduación</div></div>
       <div class="info-card"><span class="info-icon">🥂</span><div class="info-label">Después</div><div class="info-value">Celebración y Brindis</div></div>
@@ -328,9 +386,9 @@
         Querida familia y amigos,<br><br>
         Hoy, al cerrar este hermoso capítulo de mi vida, no puedo evitar sentir el corazón lleno de gratitud. Cada uno de ustedes ha sido parte fundamental de este camino — con su apoyo, sus palabras de aliento, su amor incondicional y su presencia en los momentos más difíciles.<br><br>
         A mis queridos <strong>padres</strong>, gracias por cada sacrificio, cada desvelo y cada abrazo que me dio fuerza para seguir adelante. Son mi mayor inspiración y mi más grande bendición.<br><br>
-        A mis amados <strong>abuelos paternos y maternos</strong>, gracias por sus bendiciones, su amor eterno y por enseñarme el valor del esfuerzo y la perseverancia. Su sabiduría y cariño han guiado cada uno de mis pasos.<br><br>
+        A mis amados <strong>abuelos</strong>, gracias por sus bendiciones, su amor eterno y por enseñarme el valor del esfuerzo y la perseverancia. Su sabiduría y cariño han guiado cada uno de mis pasos.<br><br>
         A mis queridos <strong>padrinos</strong>, gracias por su apoyo incondicional y por ser parte tan especial de este momento. Su cariño y generosidad son un regalo que siempre llevaré en el corazón.<br><br>
-        Queridos <strong>tíos y tías</strong>, gracias por cada abrazo, por cada sonrisa, por cada consejo y por creer siempre en mí.<br>Hoy celebro este logro sabiendo que cuento con una familia maravillosa que me impulsa a seguir soñando en grande.<br><br>
+        Queridos <strong>tíos y tías</strong>, gracias por cada abrazo, por cada sonrisa y por creer siempre en mí.<br>Hoy celebro este logro sabiendo que cuento con una familia maravillosa que me impulsa a seguir soñando en grande.<br><br>
         Este logro no es solo mío — es de todos nosotros. 🎓💙<br><br>
         <em>Con todo mi amor y eterna gratitud,</em><br>
         <strong>Steven Ariel Cayambe Moreno</strong>
@@ -343,6 +401,18 @@
 </div><!-- fin main-card -->
 
 <script>
+  // Ocultar indicador scroll al deslizar
+  const mainCard = document.getElementById('main-card');
+  mainCard.addEventListener('scroll', function() {
+    const hint = document.getElementById('scrollHint');
+    if(hint && mainCard.scrollTop > 60) hint.style.opacity = '0';
+    else if(hint) hint.style.opacity = '1';
+  });
+  window.addEventListener('scroll', function(){
+    const hint = document.getElementById('scrollHint');
+    if(hint && window.scrollY > 80){ hint.style.transition='opacity .5s'; hint.style.opacity='0'; }
+  });
+
   // Estrellas
   const starsEl = document.getElementById('stars');
   for(let i=0;i<120;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+.5;s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${Math.random()*3+2}s;animation-delay:${Math.random()*3}s;`;starsEl.appendChild(s);}
@@ -390,6 +460,16 @@
       main.style.transform = 'translateY(0)';
       main.style.pointerEvents = 'all';
       window.scrollTo({top:0,behavior:'smooth'});
+      // Mostrar indicador de scroll
+      const hint = document.getElementById('scroll-hint');
+      hint.classList.add('visible');
+      // Ocultar al hacer scroll
+      window.addEventListener('scroll', function hideHint(){
+        hint.style.opacity = '0';
+        hint.style.transition = 'opacity .5s';
+        setTimeout(()=>{ hint.style.display='none'; }, 500);
+        window.removeEventListener('scroll', hideHint);
+      });
     }, 2200);
   }
   // ===== FIN LÓGICA DEL SOBRE =====
